@@ -1,3 +1,5 @@
+package one;
+
 public class Variables {
 
     /**
