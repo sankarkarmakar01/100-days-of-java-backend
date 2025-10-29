@@ -41,7 +41,5 @@ public class EncapsulationDemo {
         car1.drive();
 
         Car car2 = new Car("Kia","White",120);
-
-
     }
 }

@@ -1,6 +1,5 @@
 package three.interfaces;
 
-
 // Team B
 public interface CarControls {
     void turnRight();
