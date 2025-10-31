@@ -20,7 +20,6 @@ public class BookStoreChallenge {
                 new Book("Fiction", 9.99, 1998, "Old Man and the Sea")
         );
 
-
 //        - Discounted Books:
 //        The bookstore is planning a sale. Identify all books that are priced over $20. Display these books.
         System.out.println("Discounted Books: ");
