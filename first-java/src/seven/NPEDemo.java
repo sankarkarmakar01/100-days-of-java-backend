@@ -10,29 +10,21 @@ public class NPEDemo {
         } else {
             System.out.println(name.length());
         }
-
         // Creating Optional
         Optional<String>  optionalString = Optional.of("Java");
         System.out.println(optionalString);
-
         Optional<String> empty = Optional.empty();
         System.out.println(empty);
-
         Optional<String> maybe = Optional.ofNullable(null);
         System.out.println(maybe);
-
         // Checking Values
         System.out.println(optionalString.isPresent());
         System.out.println(maybe.isPresent());
-
         System.out.println(optionalString.isEmpty());
         System.out.println(maybe.isEmpty());
-
         // get()
         System.out.println(optionalString.get());
 //        System.out.println(maybe.get()); // Exception
-
-
         // orElse("default-value)
         System.out.println(optionalString.orElse("default"));
         System.out.println(maybe.orElse("default"));
