@@ -1,4 +1,6 @@
-package domain;
+package entity;
+
+import domain.Type;
 
 import java.time.LocalDateTime;
 

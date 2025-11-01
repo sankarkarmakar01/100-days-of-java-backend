@@ -1,6 +1,6 @@
 package repository;
 
-import domain.Transaction;
+import entity.Transaction;
 
 import java.util.*;
 

@@ -1,6 +1,6 @@
 package repository;
 
-import domain.Account;
+import entity.Account;
 
 import java.util.*;
 

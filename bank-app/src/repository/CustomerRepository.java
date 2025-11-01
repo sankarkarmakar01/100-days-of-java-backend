@@ -1,7 +1,6 @@
 package repository;
 
-import domain.Customer;
-import domain.Transaction;
+import entity.Customer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
