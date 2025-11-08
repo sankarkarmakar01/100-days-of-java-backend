@@ -16,7 +16,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        System.out.println(user.getEmail());
+//        System.out.println(user.getEmail());
         userDb.putIfAbsent(user.getId(), user);
 //        return ResponseEntity.status(HttpStatus.CREATED)
 //                .body(user);
@@ -48,5 +48,55 @@ public class UserController {
     public List<User> getUsers() {
         return new ArrayList<>(userDb.values());
     }
+
+//    @GetMapping({"/users", "/user/1"})
+
+    //user/{id} --> 1,2,3
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUser(@PathVariable(value = "userId", required = false) int id) {
+        if(!userDb.containsKey(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(userDb.get(id));
+    }
+
+    @GetMapping("/{userId}/orders/{orderId}")
+    public ResponseEntity<User> getUserOrder(
+            @PathVariable("userId") int id,
+            @PathVariable int orderId
+    ) {
+        System.out.println("Order ID: " + orderId);
+        if(!userDb.containsKey(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(userDb.get(id));
+    }
+
+    // /search?name=john
+    @GetMapping("/search")
+    public ResponseEntity<List<User>> searchUsers(
+            @RequestParam(required = false, defaultValue = "lili") String name,
+            @RequestParam(required = false, defaultValue = "email") String email
+    ) {
+        System.out.println(name);
+        List<User> users = userDb.values().stream()
+                .filter(u -> u.getName().equalsIgnoreCase(name))
+                .filter(u -> u.getEmail().equalsIgnoreCase(email))
+                .toList();
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("info/{id}")
+    public String getInfo(
+            @PathVariable int id,
+            @RequestParam String name,
+            @RequestHeader("User-Agent") String userAgent
+    ) {
+        return "User Agent: " + userAgent
+                + " : " + id
+                + " : " + name
+                ;
+    }
+
 
 }
