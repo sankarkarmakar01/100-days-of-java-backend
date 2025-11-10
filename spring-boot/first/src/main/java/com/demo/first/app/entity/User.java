@@ -1,4 +1,4 @@
-package com.demo.first.app;
+package com.demo.first.app.entity;
 
 // POJO --> Plane Old Java Object
 public class User {
