@@ -18,7 +18,6 @@ public class GlobalExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-
     @ExceptionHandler({UserNotFoundException.class, IllegalArgumentException.class, NullPointerException.class})
     public ResponseEntity<Map<String, Object>> handleIllegalArgumentException(
             Exception exception
