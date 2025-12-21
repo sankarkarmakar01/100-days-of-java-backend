@@ -1,46 +1,77 @@
 package com.example.first.services;
 
-import com.example.first.entity.User;
+import com.example.first.exceptions.UserNotFoundException;
+import com.example.first.model.User;
 import com.example.first.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
+    private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     public User createUser(User user) {
+        logger.info("Creating user.... INFO");
+        logger.debug("Creating user.... DEBUG");
+        logger.trace("Creating user.... TRACE");
+        logger.warn("Creating user.... WARN");
+        logger.error("Creating user.... ERROR");
+        System.out.println(user.getEmail());
+
+        if (user.getProfile() != null)
+            user.getProfile().setUser(user);
+
+        if (user.getPosts() != null)
+            user.getPosts().forEach(post -> post.setUser(user));
+
         return userRepository.save(user);
     }
 
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public User updateUser(User user) {
+        User existing = userRepository.findById(user.getId())
+                .orElseThrow(
+                        () -> new UserNotFoundException("User with ID " + user.getId() + " does not exist")
+                );
+
+        existing.setName(user.getName());
+        existing.setEmail(user.getEmail());
+        return userRepository.save(existing);
     }
 
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
-    }
-
-    public User updateUser(Long id, User user) {
-        return userRepository.findById(id)
-        .map(existingUser->{
-            existingUser.setName(user.getName());
-            existingUser.setEmail(user.getEmail());
-            return userRepository.save(existingUser);
-        }).orElseThrow(()->new RuntimeException("User not found"));
-    }
-
-    public String deleteUser(Long id) {
-        if(id == null) {
-            return "User Id not found";
-        }
+    public boolean deleteUser(int id) {
+        if (!userRepository.existsById(id))
+            throw new UserNotFoundException("User with ID " + id + " does not exist");
         userRepository.deleteById(id);
-        return "User Deleted";
+        return true;
+    }
+
+    public List<User> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        if (users.isEmpty())
+            throw new NullPointerException("No users found in the database");
+        return users;
+    }
+
+    public User getUserById(int id) {
+        return userRepository.findById(id)
+                .orElseThrow(
+                        () -> new UserNotFoundException("User with ID " + id + " does not exist")
+                );
+    }
+
+    public List<User> searchUsers(String name, String email) {
+//        return userRepository.findByNameAndEmail(name, email);
+        return userRepository.findByNameIgnoreCaseAndEmailIgnoreCase(name, email);
     }
 }
